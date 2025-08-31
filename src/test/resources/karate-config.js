@@ -3,7 +3,7 @@ function fn() {
   var config = {
     env: env,
     baseUrl: 'https://reqres.in/api'
-    apiToken: karate.properties['API_TOKEN']
+    apiToken: java.lang.System.getenv('API_TOKEN');
   };
 
   if (config.apiToken) {
