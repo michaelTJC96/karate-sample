@@ -1,0 +1,35 @@
+name: Nightly Regression
+
+on:
+  schedule:
+    - cron: '0 14 * * *'  # 3:00 AM SGT (UTC 19:00). Adjust as you like.
+  workflow_dispatch:
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Temurin JDK 23
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '23'
+          cache: maven
+
+      - name: Run Regression Suite
+        run: |
+          # Run your full suite or a specific regression runner
+          mvn -B clean test -Dtest=RegressionTest
+          # Or if you have a ParallelRunner:
+          # mvn -B clean test -Dtest=ParallelRunner
+
+      - name: Upload Karate Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: karate-reports-nightly
+          path: |
+            target/karate-reports/**
+            target/surefire-reports/**
