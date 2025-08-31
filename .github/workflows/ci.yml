@@ -25,7 +25,7 @@ jobs:
       # (Optional) Environment variables / secrets for tests
       - name: Export env for Karate
         run: |
-#          echo "KARATE_ENV=qa" >> $GITHUB_ENV
+          echo "KARATE_ENV=qa" >> $GITHUB_ENV
           echo "API_TOKEN=${{ secrets.API_TOKEN }}" >> $GITHUB_ENV
 
       - name: Build & Test
