@@ -2,6 +2,7 @@ Feature: User API Tests
 
   Background:
     * url 'https://reqres.in/api'
+    * header x-api-key = apiToken
 
   @smoke
   Scenario: Get user by id

@@ -3,6 +3,7 @@ function fn() {
   var config = {
     env: env,
     baseUrl: 'https://reqres.in/api'
+    apiToken: karate.properties['API_TOKEN']
   };
 
   karate.configure('headers', { Accept: 'application/json' });

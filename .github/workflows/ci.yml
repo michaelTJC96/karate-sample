@@ -24,18 +24,18 @@ jobs:
           cache: maven
 
       # (Optional) Environment variables / secrets for tests
-      # - name: Export env for Karate
-      #   run: |
-      #     echo "KARATE_ENV=qa" >> $GITHUB_ENV
-      #     echo "API_TOKEN=${{ secrets.API_TOKEN }}" >> $GITHUB_ENV
+      - name: Export env for Karate
+        run: |
+#          echo "KARATE_ENV=qa" >> $GITHUB_ENV
+          echo "API_TOKEN=${{ secrets.API_TOKEN }}" >> $GITHUB_ENV
 
       - name: Build & Test
         run: |
           mvn -q -version
           # OPTION A: run everything
-          mvn -B clean test
+#          mvn -B clean test
           # OPTION B: run a specific runner
-          # mvn -B clean test -Dtest=SmokeTest
+           mvn -B clean test -Dtest=SmokeTest
           # OPTION C: run one method in a runner
           # mvn -B clean test -Dtest=MultiSuiteRunner#runUsersSmoke
 
