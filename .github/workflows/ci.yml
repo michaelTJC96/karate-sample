@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  tests:
+    name: Karate Tests (JDK 23)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Temurin JDK 23
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '23'
+          cache: maven
+
+      # (Optional) Environment variables / secrets for tests
+      # - name: Export env for Karate
+      #   run: |
+      #     echo "KARATE_ENV=qa" >> $GITHUB_ENV
+      #     echo "API_TOKEN=${{ secrets.API_TOKEN }}" >> $GITHUB_ENV
+
+      - name: Build & Test
+        run: |
+          mvn -q -version
+          # OPTION A: run everything
+          mvn -B clean test
+          # OPTION B: run a specific runner
+          # mvn -B clean test -Dtest=SmokeTest
+          # OPTION C: run one method in a runner
+          # mvn -B clean test -Dtest=MultiSuiteRunner#runUsersSmoke
+
+      - name: Upload Karate Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: karate-reports
+          path: |
+            target/karate-reports/**
+            target/surefire-reports/**
